@@ -1,4 +1,4 @@
-# rental-arr-analytics-engineering
+# rental-analytics-dbt
 
 Analytics engineering project (dbt/SQL) modeling rental listing data for revenue, occupancy, and amenity analysis.
 
