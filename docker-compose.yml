@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: rental_analytics_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dbt_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dbt_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-rental_analytics}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./data:/data:ro   # mount raw CSVs here for loading
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dbt_user} -d ${POSTGRES_DB:-rental_analytics}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  dbt:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: rental_analytics_dbt
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-dbt_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dbt_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-rental_analytics}
+      POSTGRES_PORT: 5432
+      DBT_PROFILES_DIR: /root/.dbt
+    volumes:
+      - ./:/usr/app        # repo root -> dbt project lives here
+      - ./docker/profiles.yml:/root/.dbt/profiles.yml
+    working_dir: /usr/app
+    tty: true
+    stdin_open: true
+    command: ["tail", "-f", "/dev/null"]  # keep container alive; exec in as needed
+
+volumes:
+  pg_data:
