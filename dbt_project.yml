@@ -3,3 +3,11 @@ version: '1.0.0'
 config-version: 2
 
 profile: 'rental_analytics_dbt'
+
+model-paths: ["models"]
+
+models:
+  rental_analytics_dbt:
+    staging:
+      +materialized: view
+      +schema: staging
