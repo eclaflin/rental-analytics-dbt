@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: >
+      Raw source tables loaded from CSV into Postgres on container init
+      (see docker/initdb/). Columns are untyped (TEXT) at this layer;
+      casting and cleanup happen in staging models.
+    tables:
+      - name: listings
+        description: >
+          One row per rental listing. Known data quality issue: a small
+          number of rows have a null `id`. 
+
+      - name: calendar
+        description: "One row per listing per date.  Known data quality issue: a small
+        number of duplicate records at the grain of `listing_id` and `date`"
+
+      - name: amenities_changelog
+        description: "One row per amenity-list change event for a listing."
