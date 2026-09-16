@@ -12,3 +12,9 @@ Requires Docker.
 4. `dbt debug` to confirm the connection
 
 Postgres runs on `localhost:5432` if you need to connect directly (e.g. via `psql` or a GUI client).
+
+## Data Loading
+
+Source CSVs are loaded into a `raw` schema automatically on first container start (see `docker/initdb/`), rather than via `dbt seed`. 
+
+All raw columns are loaded as `TEXT` with no casting or cleanup at load time. This is an explicit decision to manage type casting, null handling, and other cleanup steps via dbt in the staging layer
