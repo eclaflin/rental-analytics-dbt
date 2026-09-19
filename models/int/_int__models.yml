@@ -42,3 +42,45 @@ models:
         description: Total revenue for the reservation, summed across all nightly prices.
         data_tests:
           - not_null
+
+  - name: int_amenities__effective_ranges
+    description: >
+      One row per amenity state change per listing. Converts the amenities changelog
+      into SCD2-style date ranges, capturing which amenities were active for a given
+      listing between effective_from and effective_to. A null effective_to indicates
+      the current active record. Intra-day changes are resolved by taking the latest
+      change within a given day. Includes pre-parsed boolean flags for amenities
+      referenced in known business problems.
+    columns:
+      - name: listing_id
+        description: Foreign key to stg_raw__listings.
+        data_tests:
+          - not_null
+
+      - name: amenities
+        description: JSON array of amenities active for this listing during this effective window.
+        data_tests:
+          - not_null
+
+      - name: effective_from
+        description: Date from which this amenity state became active, inclusive.
+        data_tests:
+          - not_null
+
+      - name: effective_to
+        description: Date on which this amenity state was superseded, exclusive. Null indicates the current active record.
+
+      - name: has_air_conditioning
+        description: Whether air conditioning was present during this effective window.
+        data_tests:
+          - not_null
+
+      - name: has_lockbox
+        description: Whether a lockbox was present during this effective window.
+        data_tests:
+          - not_null
+
+      - name: has_first_aid_kit
+        description: Whether a first aid kit was present during this effective window.
+        data_tests:
+          - not_null
