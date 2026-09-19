@@ -10,6 +10,12 @@ renamed as (
         amenities::text as amenities
     from
         source
+    where
+        /*
+            rows with null listing_ids cannot join to listings and are excluded here;
+            see stg_raw__listings.sql
+        */
+        listing_id is not null
 )
 
 select *

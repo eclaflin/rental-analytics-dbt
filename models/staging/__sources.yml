@@ -24,8 +24,23 @@ sources:
                     severity: warn
 
       - name: calendar
-        description: "One row per listing per date.  Known data quality issue: a small
-        number of duplicate records at the grain of `listing_id` and `date`"
+        description: > 
+          One row per listing per date.  Known data quality issue: a small
+          number of duplicate records at the grain of `listing_id` and `date`
+        columns:
+          - name: listing_id
+            data_tests:
+              - not_null:
+                  config:
+                    severity: warn
 
       - name: amenities_changelog
-        description: "One row per amenity-list change event for a listing."
+        description: >
+          One row per amenity-list change event for a listing.
+
+        columns:
+          - name: listing_id
+            data_tests:
+              - not_null:
+                  config:
+                    severity: warn
