@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: int_calendar__reservations
+    description: >
+      One row per reservation. Collapsed from the day-level calendar to capture
+      each reservation as a revenue-generating event. Deduplicates known source
+      duplicates at the listing_id + date grain before aggregating.
+    columns:
+      - name: listing_id
+        description: Foreign key to stg_raw__listings.
+        data_tests:
+          - not_null
+
+      - name: reservation_id
+        description: Unique identifier for the reservation.
+        data_tests:
+          - not_null
+
+      - name: checkin_date
+        description: First night of the reservation.
+        data_tests:
+          - not_null
+
+      - name: checkout_date
+        description: Last night of the reservation.
+        data_tests:
+          - not_null
+
+      - name: num_nights
+        description: Number of nights in the reservation.
+        data_tests:
+          - not_null
+
+      - name: total_revenue
+        description: Total revenue for the reservation, summed across all nightly prices.
+        data_tests:
+          - not_null
