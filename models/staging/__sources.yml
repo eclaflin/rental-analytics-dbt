@@ -12,15 +12,16 @@ sources:
         description: >
           One row per rental listing. Known data quality issue: a small
           number of rows have a null `id`. 
-          
-        # NOTE: There's an argument for adding a test at the source layer to catch null listing_ids,
-        # using `warn` severity so the upstream data-quality issue is visible and monitored without
-        # failing the job outright. In practice, at enterprise scale, I've found this pattern tends to
-        # balloon into a volume of warn messages that analytics engineers train themselves to ignore
-        # over time, since the issue is outside their control. It's an example of where a documented
-        # best practice doesn't necessarily drive a better outcome: it adds alerting fatigue
-        # without a clear path to act on it. Debatable either way. Handling will instead be made explicit
-        # downstream in stg_listings.sql.
+
+        columns:
+          - name: id
+            # A not_null test with warn severity is applied here to surface this upstream data quality
+            # issue without failing the run. Rows with null ids are explicitly filtered in stg_raw__listings.sql,
+            # keeping the handling decision in one place rather than propagating nulls downstream.
+            data_tests:
+              - not_null:
+                  config:
+                    severity: warn
 
       - name: calendar
         description: "One row per listing per date.  Known data quality issue: a small

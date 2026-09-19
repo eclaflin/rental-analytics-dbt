@@ -45,6 +45,12 @@ renamed as (
         host_verifications::text as host_verifications
     from
         source
+    where
+        /*
+            Rows with null ids cannot join to any other source.
+            They are excluded here rather than propagating nulls downstream
+        */
+        id is not null
 )
 
 select *
