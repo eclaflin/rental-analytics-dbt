@@ -10,7 +10,8 @@ renamed as (
         nullif(reservation_id, 'NULL')::integer as reservation_id,
 
         -- numeric
-        price::numeric as price,
+        -- dollar-sign handling to mirror treatment in listings
+        replace(replace(price, '$', ''), ',', '')::numeric as price,
         minimum_nights::numeric as minimum_nights,
         maximum_nights::numeric as maximum_nights,
 
