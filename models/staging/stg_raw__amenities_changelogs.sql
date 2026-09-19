@@ -6,7 +6,8 @@ with source as (
 renamed as (
     select
         listing_id::integer as listing_id,
-        change_at::date as change_at,
+        -- maintaining timestamp to protect intra-day ordering
+        change_at::timestamp as change_at,
         amenities::text as amenities
     from
         source
