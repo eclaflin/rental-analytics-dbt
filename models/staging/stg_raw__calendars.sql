@@ -20,14 +20,14 @@ renamed as (
 
         -- boolean
         available::boolean as available
-        from
-            source
-        where
-            /*
-                rows with null listing_ids cannot join to listings and are excluded here;
-                see stg_raw__listings.sql
-            */
-            listing_id is not null
+    from
+        source
+    where
+        /*
+            rows with null listing_ids cannot join to listings and are excluded here;
+            see stg_raw__listings.sql
+        */
+        listing_id is not null
 )
 
 select *
