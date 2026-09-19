@@ -19,12 +19,7 @@ renamed as (
         replace(replace(price, '$', ''), ',', '')::numeric as price,
 
         -- dates
-        /*
-            Though it appears to be a timestamp dt in upstream data, fact that
-            time values are all zeroes implies this is semantically a date value,
-            choosing to cast as a date as a more pragmatic approach acknowledging the
-            potential for quiet loss if/as time values begin populating upstream
-        */
+        -- source stores as datetime but time is always midnight; downcast to date intentionally
         host_since::date as host_since,
         first_review::date as first_review,
         last_review::date as last_review,
