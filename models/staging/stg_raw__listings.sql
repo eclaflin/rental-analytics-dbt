@@ -12,7 +12,7 @@ renamed as (
         -- numerics
         accommodates::integer as accommodates,
         bedrooms::integer as bedrooms,
-        beds::integer as bed,
+        beds::integer as beds,
         number_of_reviews::integer as number_of_reviews,
         review_scores_rating::numeric as review_score_rating,
         -- future-proofing price field against thousands separator
