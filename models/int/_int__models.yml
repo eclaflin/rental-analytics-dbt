@@ -6,6 +6,12 @@ models:
       One row per reservation. Collapsed from the day-level calendar to capture
       each reservation as a revenue-generating event. Deduplicates known source
       duplicates at the listing_id + date grain before aggregating.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - listing_id
+              - reservation_id
     columns:
       - name: listing_id
         description: Foreign key to stg_raw__listings.
