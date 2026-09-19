@@ -1,0 +1,128 @@
+version: 2
+
+models:
+  - name: stg_raw__listings
+    description: >
+      One row per rental listing. Cleaned and recast from raw.listings.
+      Rows with null listing_id are excluded. Amenities reflect a point-in-time
+      snapshot from the start of the calendar date range; use stg_raw__amenities_changelogs
+      for historical amenity state.
+    columns:
+      - name: listing_id
+        description: Unique identifier for this listing.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: host_id
+        description: Unique identifier for the host who owns this listing.
+        data_tests:
+          - not_null
+
+      - name: listing_name
+        description: Display name of the listing.
+
+      - name: host_name
+        description: Display name of the host.
+
+      - name: host_since
+        description: Date the host signed up. Source stores as datetime; downcast to date as time component is always midnight.
+
+      - name: host_location
+        description: Location where the host is based.
+
+      - name: host_verifications
+        description: JSON array of verification methods available to the host.
+
+      - name: listing_neighborhood
+        description: Neighborhood where the listing is located.
+
+      - name: listing_property_type
+        description: Type of property (e.g. entire home, private room).
+
+      - name: listing_room_type
+        description: Type of room available to guests.
+
+      - name: accommodates
+        description: Maximum number of guests the listing can accommodate.
+
+      - name: listing_bathrooms_description
+        description: Free-text description of bathrooms available (e.g. "1 bath", "1 shared bath").
+
+      - name: bedrooms
+        description: Number of bedrooms available for guest use.
+
+      - name: beds
+        description: Number of beds available for guest use.
+
+      - name: amenities_snapshot
+        description: >
+          JSON array of amenities available at this listing. Represents a point-in-time
+          snapshot; not suitable for historical amenity analysis. Use stg_raw__amenities_changelogs instead.
+
+      - name: price
+        description: List price of the listing in USD as of the start of the calendar date range.
+
+      - name: number_of_reviews
+        description: Total number of reviews this listing has ever received.
+
+      - name: review_score_rating
+        description: Average review score for this listing.
+
+      - name: first_review
+        description: Date of the first review this listing received.
+
+      - name: last_review
+        description: Date of the most recent review this listing received.
+
+  - name: stg_raw__calendars
+    description: >
+      One row per listing per date. Cleaned and recast from raw.calendar.
+      Rows with null listing_id are excluded. Known duplicate records exist at the
+      listing_id + date grain in the source; deduplication is handled in the intermediate layer.
+    columns:
+      - name: listing_id
+        description: Foreign key to stg_raw__listings.
+        data_tests:
+          - not_null
+
+      - name: listing_date
+        description: The date this row describes.
+        data_tests:
+          - not_null
+
+      - name: available
+        description: Whether the listing is available for booking on this date.
+        data_tests:
+          - not_null
+
+      - name: reservation_id
+        description: Identifier for the reservation on this date. Null if no reservation exists.
+
+      - name: price
+        description: Price to rent this listing on this date in USD.
+
+      - name: minimum_nights
+        description: Minimum number of consecutive nights required to book this listing.
+
+      - name: maximum_nights
+        description: Maximum number of consecutive nights allowed for a booking of this listing.
+
+  - name: stg_raw__amenities_changelogs
+    description: >
+      One row per amenity-list change event per listing. Cleaned and recast from
+      raw.amenities_changelog. Rows with null listing_id are excluded. Used as the
+      authoritative source for historical amenity state.
+    columns:
+      - name: listing_id
+        description: Foreign key to stg_raw__listings.
+        data_tests:
+          - not_null
+
+      - name: change_at
+        description: Timestamp when the amenities list changed. Kept as timestamp to preserve intra-day ordering.
+        data_tests:
+          - not_null
+
+      - name: amenities
+        description: JSON array of amenities available for this listing as of change_at.
