@@ -12,8 +12,8 @@ renamed as (
         -- numeric
         -- dollar-sign handling to mirror treatment in listings
         replace(replace(price, '$', ''), ',', '')::numeric as price,
-        minimum_nights::numeric as minimum_nights,
-        maximum_nights::numeric as maximum_nights,
+        minimum_nights::integer as minimum_nights,
+        maximum_nights::integer as maximum_nights,
 
         -- dates
         date::date as listing_date,
