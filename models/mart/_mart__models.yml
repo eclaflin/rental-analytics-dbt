@@ -98,7 +98,8 @@ models:
           amenities snapshot for listings with no changelog entries.
         data_tests:
           - not_null:
-              severity: warn
+              config:
+                severity: warn
 
       - name: has_air_conditioning
         description: True if air conditioning was listed as an amenity on this date.
