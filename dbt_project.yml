@@ -15,3 +15,7 @@ models:
     int:
       +materialized: view
       +schema: int
+
+    mart:
+      +materialized: view
+      +schema: mart
