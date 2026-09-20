@@ -64,7 +64,7 @@ models:
       - dbt_utils.expression_is_true:
           arguments:
             expression: "effective_from < effective_to"
-          where: "effective_to is not null"
+            where: "effective_to is not null"
     columns:
       - name: listing_id
         description: Foreign key to stg_raw__listings.
