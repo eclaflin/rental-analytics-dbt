@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: mart_listings__daily_activity
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - listing_id
+              - listing_date
     description: >
       One row per listing per calendar date. Spine is the deduplicated calendar,
       joined to listing attributes and point-in-time amenity state. Amenity flags
@@ -11,6 +17,8 @@ models:
     columns:
       - name: listing_date
         description: The calendar date this row describes.
+        data_tests:
+          - not_null
 
       - name: listing_id
         description: Unique identifier for the listing.
@@ -74,6 +82,8 @@ models:
 
       - name: available
         description: Whether the listing is available for booking on this date.
+        data_tests:
+          - not_null
 
       - name: price
         description: Price to rent this listing on this date in USD. Sourced from the calendar; falls back to the listing snapshot price where null.
@@ -86,6 +96,9 @@ models:
           JSON array of amenities active for this listing on this date. Resolved from
           the changelog effective ranges where available; falls back to the listings
           amenities snapshot for listings with no changelog entries.
+        data_tests:
+          - not_null:
+              severity: warn
 
       - name: has_air_conditioning
         description: True if air conditioning was listed as an amenity on this date.
