@@ -8,8 +8,8 @@ ranked as (
         *,
         -- handle for potential intra-day changes by taking the latest within a single day
         row_number() over (
-            partition by listing_id, change_at::date
-            order by change_at desc
+            partition by listing_id, changed_at::date
+            order by changed_at desc
         ) as rn
     from changelog
 ),
@@ -23,11 +23,11 @@ effective_ranges as (
     select
         listing_id,
         amenities,
-        change_at::date as effective_from,
+        changed_at::date as effective_from,
         -- treat amenities as scd2 - establish from - to datee window
-        lead(change_at::date) over (
+        lead(changed_at::date) over (
             partition by listing_id
-            order by change_at
+            order by changed_at
         ) as effective_to
     from deduped
 )

@@ -127,10 +127,10 @@ models:
                 to: ref('stg_raw__listings')
                 field: listing_id
 
-      - name: change_at
+      - name: changed_at
         description: Timestamp when the amenities list changed. Kept as timestamp to preserve intra-day ordering.
         data_tests:
           - not_null
 
       - name: amenities
-        description: JSON array of amenities available for this listing as of change_at.
+        description: JSON array of amenities available for this listing as of changed_at.

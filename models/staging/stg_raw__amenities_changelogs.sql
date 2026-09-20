@@ -7,7 +7,7 @@ renamed as (
     select
         listing_id::integer as listing_id,
         -- maintaining timestamp to protect intra-day ordering
-        change_at::timestamp as change_at,
+        change_at::timestamp as changed_at,
         amenities::text as amenities
     from
         source
