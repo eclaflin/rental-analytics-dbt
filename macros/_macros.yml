@@ -16,3 +16,14 @@ macros:
         description: The custom schema name defined in dbt_project.yml, or none if not set.
       - name: node
         description: The dbt node being compiled (internal dbt object).
+
+  - name: clean_price
+    description: >
+      Strips dollar signs and thousands separators from a price string and casts
+      to numeric. Applied at the staging layer wherever raw price columns are
+      loaded as TEXT (listings and calendars). Centralizes the cleaning logic so
+      any change to price formatting in the source only needs updating in one place.
+    arguments:
+      - name: column_name
+        type: string
+        description: The name of the column containing the raw price string.

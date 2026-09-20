@@ -15,8 +15,7 @@ renamed as (
         beds::integer as beds,
         number_of_reviews::integer as number_of_reviews,
         review_scores_rating::numeric as review_score_rating,
-        -- future-proofing price field against thousands separator
-        replace(replace(price, '$', ''), ',', '')::numeric as price,
+        {{ clean_price('price') }} as price,
 
         -- dates
         -- source stores as datetime but time is always midnight; downcast to date intentionally

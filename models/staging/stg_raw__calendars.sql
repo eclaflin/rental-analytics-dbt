@@ -10,8 +10,7 @@ renamed as (
         nullif(reservation_id, 'NULL')::integer as reservation_id,
 
         -- numeric
-        -- dollar-sign handling to mirror treatment in listings
-        replace(replace(price, '$', ''), ',', '')::numeric as price,
+        {{ clean_price('price') }} as price,
         minimum_nights::integer as minimum_nights,
         maximum_nights::integer as maximum_nights,
 
