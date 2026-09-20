@@ -17,6 +17,13 @@ renamed as (
             see stg_raw__listings.sql
         */
         listing_id is not null
+        /*
+            rows whose listing_id has no matching listing are also excluded;
+            an orphaned listing_id is unresolvable downstream just as a null one is
+        */
+        and listing_id::integer in (
+            select listing_id from {{ ref('stg_raw__listings') }}
+        )
 )
 
 select *
