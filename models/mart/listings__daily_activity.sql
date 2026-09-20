@@ -60,6 +60,7 @@ joined as (
         listings.number_of_reviews,
         listings.review_score_rating,
         listings.first_review,
+        listings.last_review,
 
         -- host details
         listings.host_name,

@@ -62,6 +62,9 @@ models:
       - name: first_review
         description: Date of the first review this listing received.
 
+      - name: last_review
+        description: Date of the most recent review this listing received.
+
       - name: host_name
         description: Display name of the host.
 
