@@ -62,10 +62,10 @@ joined as (
         listings.first_review,
 
         -- host details
-        host_name,
-        host_location,
-        host_since,
-        host_verifications,
+        listings.host_name,
+        listings.host_location,
+        listings.host_since,
+        listings.host_verifications,
 
         -- state attributes
         amenity_state.minimum_nights,
