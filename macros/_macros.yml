@@ -1,0 +1,19 @@
+version: 2
+
+macros:
+  - name: generate_schema_name
+    description: >
+      Overrides dbt's default schema naming behavior. By default dbt prefixes
+      custom schema names with the target schema (e.g. `dev_staging`). This
+      override uses custom schema names verbatim (e.g. `staging`), keeping
+      schema names consistent regardless of the target environment.
+      Trade-off: appropriate for a single-developer local project; in a
+      multi-developer or CI setup, the default prefix behavior provides
+      schema isolation between builds that this override removes.
+    arguments:
+      - name: custom_schema_name
+        type: string
+        description: The custom schema name defined in dbt_project.yml, or none if not set.
+      - name: node
+        type: node
+        description: The dbt node being compiled.
