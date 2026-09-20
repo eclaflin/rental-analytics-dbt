@@ -1,45 +1,48 @@
 version: 2
 
 models:
-  - name: int_calendar__reservations
+  - name: int_calendar__deduped
     description: >
-      One row per reservation. Collapsed from the day-level calendar to capture
-      each reservation as a revenue-generating event. Deduplicates known source
-      duplicates at the listing_id + date grain before aggregating.
+      One row per listing per date. Deduplicates known source duplicates at the
+      listing_id + date grain, preserving all rows including available and
+      blocked-but-unreserved days. Serves as the spine for the mart.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
               - listing_id
-              - reservation_id
+              - listing_date
     columns:
       - name: listing_id
         description: Foreign key to stg_raw__listings.
         data_tests:
           - not_null
 
+      - name: listing_date
+        description: Calendar date this row describes.
+        data_tests:
+          - not_null
+
+      - name: available
+        description: Whether the listing was available for booking on this date.
+        data_tests:
+          - not_null
+
+      - name: price
+        description: The USD price to rent this listing on this date.
+        data_tests:
+          - not_null
+
       - name: reservation_id
-        description: Unique identifier for the reservation.
+        description: Reservation occupying this date, if any. Null if the date was available or blocked without a reservation.
+
+      - name: minimum_nights
+        description: Minimum number of nights that must be booked consecutively for this listing.
         data_tests:
           - not_null
 
-      - name: checkin_date
-        description: First night of the reservation.
-        data_tests:
-          - not_null
-
-      - name: checkout_date
-        description: Last night of the reservation.
-        data_tests:
-          - not_null
-
-      - name: num_nights
-        description: Number of nights in the reservation.
-        data_tests:
-          - not_null
-
-      - name: total_revenue
-        description: Total revenue for the reservation, summed across all nightly prices.
+      - name: maximum_nights
+        description: Maximum number of nights that may be booked consecutively for this listing.
         data_tests:
           - not_null
 
