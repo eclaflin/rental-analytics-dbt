@@ -53,6 +53,18 @@ models:
       listing between effective_from and effective_to. A null effective_to indicates
       the current active record. Intra-day changes are resolved by taking the latest
       change within a given day.
+    data_tests:
+      # scd2 testing: grain must be unique (no duplicate effective_from per listing),
+      # and all ranges must have start < end.
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - listing_id
+              - effective_from
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "effective_from < effective_to"
+          where: "effective_to is not null"
     columns:
       - name: listing_id
         description: Foreign key to stg_raw__listings.
