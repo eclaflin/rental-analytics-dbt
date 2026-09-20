@@ -5,6 +5,8 @@ config-version: 2
 profile: 'rental_analytics_dbt'
 
 model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
 
 models:
   rental_analytics_dbt:
