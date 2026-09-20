@@ -8,7 +8,7 @@ with ranked as (
         *,
         row_number() over (
             partition by listing_id, listing_date
-            order by listing_date  -- arbitrary but deterministic tiebreaker
+            order by reservation_id nulls last
         ) as rn
     from
         {{ ref('stg_raw__calendars') }}
