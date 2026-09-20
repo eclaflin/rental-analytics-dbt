@@ -15,5 +15,4 @@ macros:
         type: string
         description: The custom schema name defined in dbt_project.yml, or none if not set.
       - name: node
-        type: node
-        description: The dbt node being compiled.
+        description: The dbt node being compiled (internal dbt object).
