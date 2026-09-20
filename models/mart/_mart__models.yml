@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  - name: mart_listings__daily_activity
+    description: >
+      One row per listing per calendar date. Spine is the deduplicated calendar,
+      joined to listing attributes and point-in-time amenity state. Amenity flags
+      are resolved from the changelog effective ranges where available, falling back
+      to the listings amenities snapshot. Supports revenue, occupancy, pricing, and
+      amenity analysis at the day/listing grain.
+    columns:
+      - name: listing_date
+        description: The calendar date this row describes.
+
+      - name: listing_id
+        description: Unique identifier for the listing.
+
+      - name: reservation_id
+        description: Identifier for the reservation on this date. Null if the date is available or blocked without a reservation.
+
+      - name: host_id
+        description: Unique identifier for the host who owns this listing.
+
+      - name: listing_name
+        description: Display name of the listing.
+
+      - name: listing_neighborhood
+        description: Neighborhood where the listing is located.
+
+      - name: listing_property_type
+        description: Type of property (e.g. entire home, private room).
+
+      - name: listing_room_type
+        description: Type of room available to guests.
+
+      - name: listing_bathrooms_description
+        description: Free-text description of bathrooms available (e.g. "1 bath", "1 shared bath").
+
+      - name: accommodates
+        description: Maximum number of guests the listing can accommodate.
+
+      - name: bedrooms
+        description: Number of bedrooms available for guest use.
+
+      - name: beds
+        description: Number of beds available for guest use.
+
+      - name: number_of_reviews
+        description: Total number of reviews this listing has ever received.
+
+      - name: review_score_rating
+        description: Average review score for this listing.
+
+      - name: first_review
+        description: Date of the first review this listing received.
+
+      - name: host_name
+        description: Display name of the host.
+
+      - name: host_location
+        description: Location where the host is based.
+
+      - name: host_since
+        description: Date the host signed up.
+
+      - name: host_verifications
+        description: JSON array of verification methods available to the host.
+
+      - name: minimum_nights
+        description: Minimum number of consecutive nights required to book this listing on this date.
+
+      - name: maximum_nights
+        description: Maximum number of consecutive nights allowed for a booking of this listing on this date.
+
+      - name: available
+        description: Whether the listing is available for booking on this date.
+
+      - name: price
+        description: Price to rent this listing on this date in USD. Sourced from the calendar; falls back to the listing snapshot price where null.
+
+      - name: reservation_revenue
+        description: Price on this date if a reservation was active, otherwise null. Summing this column over a date range yields total revenue for reserved nights only.
+
+      - name: amenities_json
+        description: >
+          JSON array of amenities active for this listing on this date. Resolved from
+          the changelog effective ranges where available; falls back to the listings
+          amenities snapshot for listings with no changelog entries.
+
+      - name: has_air_conditioning
+        description: True if air conditioning was listed as an amenity on this date.
+
+      - name: has_lockbox
+        description: True if a lockbox was listed as an amenity on this date.
+
+      - name: has_first_aid_kit
+        description: True if a first aid kit was listed as an amenity on this date.
