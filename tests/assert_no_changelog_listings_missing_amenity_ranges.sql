@@ -43,7 +43,7 @@ mart as (
         listing_date,
         amenities_json
     from
-        {{ ref('mart_listings__daily_activity') }}
+        {{ ref('listings__daily_activity') }}
 ),
 
 failures as (
