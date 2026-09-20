@@ -86,8 +86,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_raw__listings')
-              field: listing_id
+              arguments:
+                to: ref('stg_raw__listings')
+                field: listing_id
 
       - name: listing_date
         description: The date this row describes.
@@ -122,8 +123,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_raw__listings')
-              field: listing_id
+              arguments:
+                to: ref('stg_raw__listings')
+                field: listing_id
 
       - name: change_at
         description: Timestamp when the amenities list changed. Kept as timestamp to preserve intra-day ordering.
