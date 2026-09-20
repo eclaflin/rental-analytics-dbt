@@ -21,5 +21,12 @@ deduped as (
         rn = 1
 )
 
-select *
+select
+    listing_id,
+    reservation_id,
+    price,
+    minimum_nights,
+    maximum_nights,
+    listing_date,
+    available
 from deduped
