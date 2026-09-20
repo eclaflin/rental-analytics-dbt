@@ -52,8 +52,7 @@ models:
       into SCD2-style date ranges, capturing which amenities were active for a given
       listing between effective_from and effective_to. A null effective_to indicates
       the current active record. Intra-day changes are resolved by taking the latest
-      change within a given day. Includes pre-parsed boolean flags for amenities
-      referenced in known business problems.
+      change within a given day.
     columns:
       - name: listing_id
         description: Foreign key to stg_raw__listings.
@@ -72,18 +71,3 @@ models:
 
       - name: effective_to
         description: Date on which this amenity state was superseded, exclusive. Null indicates the current active record.
-
-      - name: has_air_conditioning
-        description: Whether air conditioning was present during this effective window.
-        data_tests:
-          - not_null
-
-      - name: has_lockbox
-        description: Whether a lockbox was present during this effective window.
-        data_tests:
-          - not_null
-
-      - name: has_first_aid_kit
-        description: Whether a first aid kit was present during this effective window.
-        data_tests:
-          - not_null
